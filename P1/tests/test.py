@@ -57,5 +57,18 @@ class testClasses(unittest.TestCase):
 
         self.assertEqual(output, [0, 1, 1, 0])
 
+    def testInvert(self):
+        """
+        Testen Invert port.
+        """
+        testInvertPort = Perceptron.Perceptron(threshold=0, weights=[-1, -1], bias=0)
+        output = []
+
+        for i in range(2):
+            for x in range(2):
+                output.append(testInvertPort.output([i, x]))
+
+        self.assertEqual(output, [1, 1, 0, 0])
+
     if __name__ == '__main__':
         unittest.main()

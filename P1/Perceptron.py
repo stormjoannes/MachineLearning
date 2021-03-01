@@ -7,7 +7,7 @@ class Perceptron(object):
 
     def activatiePercep(self, inp: [float]):
         """
-        Functie verwerken van de weights en de bias optellen, akkoort geven als output boven threshold is.
+        Functie verwerken van de weights en de bias optellen, akkoord geven als output boven threshold is.
         """
         for i in range(len(inp)):
             self.outp += inp[i] * self.wht[i]

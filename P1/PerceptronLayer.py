@@ -18,3 +18,5 @@ class PerceptronLayer(object):
         Formatten van variabelen om ze duidelijk te returnen en te printen.
         """
         return f'perceptrons: {self.perceptrons} \nOutputs: {self.outp}'
+
+# PerceptronLayer([Perceptron(threshold=1, weights=[0.5, 0.5], bias=0), Perceptron(threshold=1, weights=[0.5, 1], bias=0)])

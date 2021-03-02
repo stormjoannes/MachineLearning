@@ -70,5 +70,5 @@ class testClasses(unittest.TestCase):
 
         self.assertEqual(output, [1, 1, 0, 0])
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    unittest.main()

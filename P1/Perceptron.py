@@ -20,3 +20,5 @@ class Perceptron(object):
         Formatten van variabelen om ze duidelijk te returnen en te printen.
         """
         return f'Invoer:  \nWeights: {self.wht} \nBias {self.bi} \nOutput: {self.outp}'
+
+# print(Perceptron(threshold=1, weights=[0.5, 0.5], bias=0))

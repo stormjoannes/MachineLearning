@@ -1,7 +1,7 @@
-import P1.PerceptronLayer as PerceptronLayer
+import P3.NeuronLayer as NeuronLayer
 
 class PerceptronNetwork(object):
-    def __init__(self, layers=[PerceptronLayer]) -> None:
+    def __init__(self, layers=[NeuronLayer]) -> None:
         self.lrs = layers
         self.outp = []
 

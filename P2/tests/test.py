@@ -32,7 +32,12 @@ class testClasses(unittest.TestCase):
 
 
     def iris(self):
+        """
+        Testen iris dataset
+        """
         studentnummer = '1760581'
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

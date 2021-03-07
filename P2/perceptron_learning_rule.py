@@ -1,52 +1,61 @@
 class Perceptron(object):
     def __init__(self, threshold: float, weights: [float], bias: float, learningRate: float) -> None:
-        self.th = threshold
-        self.w = weights
-        self.b = bias
+        self.threshold = threshold
+        self.weights = weights
+        self.bias = bias
         self.outp = 0
-        self.n = learningRate
+        self.learningRate = learningRate
         self.errors = []
 
-    def activatiePercep(self, inp: [float]):
+    def processInput(self, inp: [float]):
         """
-        Functie verwerken van de weights en de bias optellen, akkoord geven als output boven threshold is.
+        Functie verwerken van de weights en de bias optellen.
         """
         for i in range(len(inp)):
-            self.outp += inp[i] * self.w[i]
-        self.outp += self.b
+            self.outp += inp[i] * self.weights[i]
+        self.outp += self.bias
+        return self.activatiePercep()
 
-        return 1 if self.outp >= self.th else 0
+    def activatiePercep(self):
+        """
+        Akkoord geven als output boven threshold is.
+        """
+        return 1 if self.outp >= self.threshold else 0
 
     def update(self, input: [float], expected: float):
         """
         Berekenen van nieuwe weights en bias, error updaten.
         """
-        error = expected - self.activatiePercep(input)
+        error = expected - self.processInput(input)
+        print(error, 'error', self.weights, self.bias, 'bias')
         self.errors.append(error)
 
-        for i in range(len(self.w)):
-            deltaW = self.n * error * input[i]
-            self.w[i] = self.w[i] + deltaW
+        for i in range(len(self.weights)):
+            deltaWeights = self.learningRate * error * input[i]
+            self.weights[i] = self.weights[i] + deltaWeights
 
-        deltaB = self.n * error
-        self.b = self.b + deltaB
+        deltaBias = self.learningRate * error
+        self.bias = self.bias + deltaBias
+
+        print(self.weights, 'after weights', self.bias, 'bias')
 
     def error(self):
         """
         Berekenen mean squared error.
         """
-        return (sum(self.errors) ** 2) / len(self.errors)
+        tweedeMacht = [self.errors[i]**2 for i in range(len(self.errors))]
+        return sum(tweedeMacht) / len(tweedeMacht)
 
     def __str__(self) -> str:
         """
         Formatten van variabelen om ze duidelijk te returnen en te printen.
         """
-        return f'Uitvoer:  \nWeights: {self.w} \nBias {self.b} \nOutput: {self.outp}'
+        return f'Uitvoer:  \nWeights: {self.weights} \nBias {self.bias} \nOutput: {self.outp}'
 
-x = Perceptron(threshold=1, weights=[-0.5, 0.5], bias=-1.5, learningRate=0.8)
-print(x.activatiePercep([1, 1]))
-print(x.update([1, 1], 1), 'jaaaaaaa')
-print(x.activatiePercep([1, 1]))
-y = x.error()
-print(y, 'error')
-print(x)
+# x = Perceptron(threshold=1, weights=[-0.5, 0.5], bias=-1.5, learningRate=0.8)
+# print(x.activatiePercep([1, 1]))
+# print(x.update([1, 1], 1), 'jaaaaaaa')
+# print(x.activatiePercep([1, 1]))
+# y = x.error()
+# print(y, 'error')
+# print(x)

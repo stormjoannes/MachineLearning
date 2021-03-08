@@ -9,28 +9,35 @@ class testClasses(unittest.TestCase):
     def testAnd(self):
         """
         Testen and port
+        De and gate zou alleen AAN moeten staan als beide inputs 1 zijn.
         """
-        testAndPort = Perceptron.Perceptron(threshold=1, weights=[-0.5, 0.5], bias=-1.5, learningRate=0.8)
-        testAndPort.update([1, 1], 1)
-        output = (testAndPort.weights, testAndPort.bias)
+        testAndPort = Perceptron.Perceptron(threshold=0, weights=[0.5, 0.5], bias=-1, learningRate=0.8)
 
-        self.assertEqual(output, ([0.30000000000000004, 1.3], -0.7))
-        #De nieuwe weight 1 zou 0.3 moeten worden en de nieuwe weight 2 1.3
-        #De bias zou -0.7 moeten worden
+        output = []
+        output.append(testAndPort.processInput([0, 0]))
+        output.append(testAndPort.processInput([0, 1]))
+        output.append(testAndPort.processInput([1, 0]))
+        output.append(testAndPort.processInput([1, 1]))
+
+        self.assertEqual([0, 0, 0, 1], output)
+        #De nieuwe weight 1 zou -0.5 moeten worden en de nieuwe weight 2 0.5
+        #De bias zou -1.5 moeten worden
 
 
     def testXor(self):
         """
         Testen Xor port
+        De Xor gate zou alleen AAN moeten staan als niet alle inputs hetzelfde zijn.
         """
         testXorPort = Perceptron.Perceptron(threshold=0, weights=[1, 1], bias=-1, learningRate=0.5)
-        testXorPort.update([1, 1], 1)
-        output = (testXorPort.weights, testXorPort.bias)
 
-        #Xor is geen linear probleem dus kan niet opgelost worden met 1 perceptron, hierdoor moet ik ook not equal doen.
-        self.assertNotEqual(output, ([0.5, 0.5], -1.5))
-        # De nieuwe weight 1 zou 0.5 moeten worden en de nieuwe weight 2 0.5
-        # De bias zou -1.5 moeten worden
+        output = []
+        output.append(testXorPort.processInput([0, 0]))
+        output.append(testXorPort.processInput([0, 1]))
+        output.append(testXorPort.processInput([1, 0]))
+        output.append(testXorPort.processInput([1, 1]))
+
+        self.assertEqual([0, 1, 1, 0], output)
 
 
     def iris(self):
@@ -41,35 +48,32 @@ class testClasses(unittest.TestCase):
         random.seed(studentnummer)
         data = load_iris()
 
-        input = [random.randint(-10, 10) for i in range(4)]
+        #random 4 cijferige input tussen -5 en 5
+        input = [random.randint(-5, 5) for i in range(4)]
         bias = random.randint(-5, 5)
-        learningRule = 0.1
+        learningRate = 0.1
+        #threshold random tussen 0 en 1
         threshold = random.randint(0, 1)
-        testPercep = Perceptron.Perceptron(threshold, [], bias, learningRule)
+        testPercep = Perceptron.Perceptron(threshold, [], bias, learningRate)
 
-        score = 0
+        targets = []
+        outputs = []
 
-        while score < 1:
-            weightsa = []
-            for i in range(100):
-                testPercep.weights = data['data'][i]
-                target = data['target'][i]
-                for _ in range(15):
-                    testPercep.update(input, target)
-                weightsa.append(testPercep.weights)
-            print(testPercep.bias, testPercep.weights)
+        for i in range(100):
+            #op iedere weight de weights en bias updaten
+            testPercep.weights = data['data'][i]
+            target = data['target'][i]
+            for _ in range(15):
+                #max 15 keer de update runnen om de weights en bias te veranderen
+                testPercep.update(input, target)
 
-            total_target = []
-            total_output = []
-            for i in range(100):
-                weights = data['data'][i]
-                total_target.append(data['target'][i])
-                total_output.append(testPercep.processInput(input))
-            for i in range(len(total_target)):
-                print(total_target[i], total_output[i], data['data'][i])
-            score = accuracy_score(total_target, total_output)
-            print(score)
+        for i in range(100):
+            #lijsten vullen  met de verwachte uitkomsten en de uitkomsten om de score te berekenen.
+            targets.append(data['target'][i])
+            outputs.append(testPercep.processInput(input))
+        score = accuracy_score(targets, outputs)
 
+        self.assertEqual(1, score)
 
 if __name__ == '__main__':
     unittest.main()

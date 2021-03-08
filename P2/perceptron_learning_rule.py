@@ -3,7 +3,6 @@ class Perceptron(object):
         self.threshold = threshold
         self.weights = weights
         self.bias = bias
-        self.outp = 0
         self.learningRate = learningRate
         self.errors = []
 
@@ -11,23 +10,23 @@ class Perceptron(object):
         """
         Functie verwerken van de weights en de bias optellen.
         """
+        outp = 0
         for i in range(len(inp)):
-            self.outp += inp[i] * self.weights[i]
-        self.outp += self.bias
-        return self.activatiePercep()
+            outp += inp[i] * self.weights[i]
+        outp += self.bias
+        return self.activatiePercep(outp)
 
-    def activatiePercep(self):
+    def activatiePercep(self, outp: float):
         """
         Akkoord geven als output boven threshold is.
         """
-        return 1 if self.outp >= self.threshold else 0
+        return 1 if outp >= self.threshold else 0
 
     def update(self, input: [float], expected: float):
         """
         Berekenen van nieuwe weights en bias, error updaten.
         """
         error = expected - self.processInput(input)
-        print(error, 'error', self.weights, self.bias, 'bias')
         self.errors.append(error)
 
         for i in range(len(self.weights)):
@@ -36,8 +35,6 @@ class Perceptron(object):
 
         deltaBias = self.learningRate * error
         self.bias = self.bias + deltaBias
-
-        print(self.weights, 'after weights', self.bias, 'bias')
 
     def error(self):
         """
@@ -50,12 +47,4 @@ class Perceptron(object):
         """
         Formatten van variabelen om ze duidelijk te returnen en te printen.
         """
-        return f'Uitvoer:  \nWeights: {self.weights} \nBias {self.bias} \nOutput: {self.outp}'
-
-# x = Perceptron(threshold=1, weights=[-0.5, 0.5], bias=-1.5, learningRate=0.8)
-# print(x.activatiePercep([1, 1]))
-# print(x.update([1, 1], 1), 'jaaaaaaa')
-# print(x.activatiePercep([1, 1]))
-# y = x.error()
-# print(y, 'error')
-# print(x)
+        return f'Uitvoer:  \nWeights: {self.weights} \nBias {self.bias}'

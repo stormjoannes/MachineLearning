@@ -1,4 +1,4 @@
-import P3.sigmoid_neuron as Neuron
+import P3.Neuron as Neuron
 
 class NeuronLayer(object):
     def __init__(self, neuron=[Neuron]) -> None:

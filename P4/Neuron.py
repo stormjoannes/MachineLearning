@@ -25,21 +25,23 @@ class Neuron(object):
     def sigmoid(self):
         self.outp = 1 / (1 + math.exp(-self.outp))
 
-    def setError(self, target: float):
+    def setError(self, outp: float, target: float):
         """
         Berekenen error.
         """
-        afgelInp = self.outp * (1 - self.outp)
-        self.neuronError = afgelInp * -(target - self.outp)
+        afgelInp = self.afgeleide(outp)
+        self.neuronError = afgelInp * -(target - outp)
 
         return self.neuronError
         # tweedeMacht = [self.errors[i] ** 2 for i in range(len(self.errors))]
         # return sum(tweedeMacht) / len(tweedeMacht)
 
+    def afgeleide(self, output: float):
+        return output * (1 - output)
+
     def setGradient(self, outpNeuron: float):
         # deltaWeights = []
         self.gradient = outpNeuron * self.neuronError
-
         # for i in self.weights:
         deltaWeights = self.learningRate * outpNeuron * self.neuronError
         # deltaWeight = self.weights[i]
@@ -48,18 +50,21 @@ class Neuron(object):
 
         return deltaWeights, deltaBias
 
-    def update(self, input: [float], target: float, outpNeuron: float):
-        self.setError(target)
+    def update(self, outpNeuron: float):
         deltas = self.setGradient(outpNeuron)
         for i in self.weights:
             self.weights[i] = self.weights[i] - deltas[0]
         self.bias = self.bias - deltas[1]
 
-    def calcHiddenError(self, hidOutp: float):
-        afgelInp = hidOutp * (1 - hidOutp)
-        for i in self.weights
-            sum van lijst met alle errors
-        self.hiddenError = afgelInp * self.epsilonDing * self.weights * self.neuronError
+    def calcHiddenError(self, hidOutp: float, nextWeights: [float], nextError: [float]):
+        totalError = 0
+        for i in range(len(nextWeights)):
+            totalError += nextWeights[i] * nextError[i]
+        self.Error = self.afgeleide(hidOutp) * totalError
+        # afgelInp = hidOutp * (1 - hidOutp)
+        # for i in self.weights
+        #     #sum van lijst met alle errors
+        # self.hiddenError = afgelInp * self.epsilonDing * self.weights * self.neuronError
 
     def __str__(self) -> str:
         """
@@ -69,4 +74,4 @@ class Neuron(object):
 
 # testAndPort = Neuron(weights=[0.5, 0.5], bias=-1.5)
 # output = []
-print(round(testAndPort.activatieNeuron([0, 1])), 'ja')
+# print(round(testAndPort.activatieNeuron([0, 1])), 'ja')

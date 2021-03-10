@@ -9,6 +9,7 @@ class Neuron(object):
         self.neuronError = 0
         self.gradient = 0
         self.learningRate = learningRate
+        self.hiddenError = 0
 
     def activatieNeuron(self, inp: [float]):
         """
@@ -43,8 +44,8 @@ class Neuron(object):
         deltaWeights = self.learningRate * outpNeuron * self.neuronError
         # deltaWeight = self.weights[i]
         # deltaWeights.append(deltaWeight)
-
         deltaBias = self.learningRate * self.neuronError
+
         return deltaWeights, deltaBias
 
     def update(self, input: [float], target: float, outpNeuron: float):
@@ -54,6 +55,11 @@ class Neuron(object):
             self.weights[i] = self.weights[i] - deltas[0]
         self.bias = self.bias - deltas[1]
 
+    def calcHiddenError(self, hidOutp: float):
+        afgelInp = hidOutp * (1 - hidOutp)
+        for i in self.weights
+            sum van lijst met alle errors
+        self.hiddenError = afgelInp * self.epsilonDing * self.weights * self.neuronError
 
     def __str__(self) -> str:
         """
